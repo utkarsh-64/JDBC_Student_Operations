@@ -76,3 +76,26 @@ public class StudentOperations {
             e.printStackTrace();
         }
     }
+
+    public static void deleteStudent() {
+        try {
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM student WHERE PRN = ?");
+
+            Scanner scan = new Scanner(System.in);
+            System.out.println("Enter the PRN of the student to delete: ");
+            int prn = scan.nextInt();
+
+            stmt.setInt(1, prn);
+            int rowsDeleted = stmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                System.out.println("Student deleted successfully.");
+            } else {
+                System.out.println("No student found with the given PRN.");
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
