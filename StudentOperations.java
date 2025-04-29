@@ -161,3 +161,48 @@ public class StudentOperations {
             e.printStackTrace();
         }
     }
+
+    public static void updateStudent() {
+        try {
+            Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            PreparedStatement stmt = conn.prepareStatement(
+                    "UPDATE student SET name=?, branch=?, batch=?, cgpa=? WHERE PRN=?"
+            );
+
+            Scanner scan = new Scanner(System.in);
+
+            System.out.println("Enter PRN of student to update: ");
+            int prn = scan.nextInt();
+            scan.nextLine(); // Consume newline
+
+            System.out.println("Enter new name: ");
+            String name = scan.nextLine();
+
+            System.out.println("Enter new branch: ");
+            String branch = scan.nextLine();
+
+            System.out.println("Enter new batch: ");
+            String batch = scan.nextLine();
+
+            System.out.println("Enter new CGPA: ");
+            float cgpa = scan.nextFloat();
+
+            stmt.setString(1, name);
+            stmt.setString(2, branch);
+            stmt.setString(3, batch);
+            stmt.setFloat(4, cgpa);
+            stmt.setInt(5, prn);
+
+            int rowsUpdated = stmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Student updated successfully!");
+            } else {
+                System.out.println("No student found with given PRN!");
+            }
+
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
